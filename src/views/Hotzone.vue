@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-   <Random /> 
+   <Hot /> 
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Random from '@/components/Random.vue'
+import Hot from '@/components/Hot.vue'
 
 export default {
-  name: 'Ran',
+  name: 'Hotzone',
   components: {
-    Random
+    Hot
   }
 }
 </script>

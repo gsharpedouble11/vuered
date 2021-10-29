@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Top</router-link> |
-      <router-link to="/random">Random</router-link>
+      <router-link to="/random">Random</router-link> | 
+      <router-link to="/hot-zone">Hot Zone</router-link>
     </div>
     <router-view/>
   </div>

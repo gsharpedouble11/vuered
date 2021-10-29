@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Ran from '../views/Ran.vue'
+import Hotzone from '../views/Hotzone.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/random',
     name: 'Random',
     component: Ran
+  },
+    {
+    path: '/hot-zone',
+    name: 'Hot',
+    component: Hotzone
   }
 ]
 
