@@ -3,9 +3,9 @@
   <div class="container">
       <div>
         <label for="get-global">Select Country</label>
-        <select  class="form-control" id="get-global" @change="getPostsGlobal(selectables.value, null, limit=30, count=30)" :options="selectables">
+        <select  class="form-control" id="get-global" @change="getPostsGlobal(selected)" :options="selectables" v-model="selected">
         <option v-for="selectable in selectables" v-bind:key="selectable.value">
-            {{selectable.name}}
+            {{selectable.value}}
         </option>
     </select>
       </div>
@@ -48,21 +48,22 @@ import axios from 'axios'
 export default {
     
   name: 'Hot',
-  async created () {
-      const { posts, nextPage } = await api.getPosts("hot", null, 30 , 30);
+//   async created () {
+//       const { posts, nextPage } = await api.getPosts("hot", null, 30 , 30);
 
-console.log(posts);
-this.posts = posts;
+// console.log(posts);
+// this.posts = posts;
 
 
-this.nextPage = nextPage;
-  },
+// this.nextPage = nextPage;
+//   },
 
   data () {
     return {
         posts: [],
         postsLoading: false,
         nextPage: null,
+        selected: '',
         selectables: [ 
             {name: 'Great Britain', value: 'GB'}, 
             {name: 'United States', value: 'US'},
@@ -75,26 +76,25 @@ this.nextPage = nextPage;
   methods: {
     // get api of 'hot' based on location
     async getPostsGlobal( selected, page, limit=30, count=30 ) {
+
         let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}&g=${selected}`
-        console.log(selected)
-        console.log(url)
+
         if (page != null) {
             url += `&after=` + page
         }
 
         const { data } = await axios.get(url);
-
+        console.log(data)
         return {
 
             posts: data.data.children,
 
-            nextPage: data.data.after
-
-          
+            nextPage: data.data.after,
 
         };
+        
     },
-
+    
     morePosts () {
       window.onscroll = async () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
