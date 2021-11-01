@@ -3,7 +3,15 @@ import axios from 'axios'
 const baseUrl = "https://www.reddit.com"
 
 export default {
-        
+    
+    data () {
+    return {
+      posts: [],
+      postsLoading: false,
+      nextPage: null
+    }
+    
+  },
     
 
    async getPosts( topic, page, limit=30, count=30 ) {
@@ -22,9 +30,6 @@ export default {
 
             nextPage: data.data.after
 
-          
-
         };
     }
-
-  }
+}

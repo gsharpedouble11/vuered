@@ -58,7 +58,7 @@ this.nextPage = nextPage;
 },
 
     mounted () {
-        this.morePosts();
+      this.morePosts();
     }
 }
 
@@ -68,8 +68,5 @@ this.nextPage = nextPage;
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#more-posts {
-  margin-bottom: 3rem;
-  cursor: pointer;
-}
+
 </style>

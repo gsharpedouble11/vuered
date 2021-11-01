@@ -12,9 +12,7 @@
         </option>
         </select>
       </div>
-
       <Card v-bind:posts="posts" />
-
   </div>
 </template>
 
@@ -49,55 +47,44 @@ export default {
 
   methods: {
     // get api of 'hot' based on location
-    async getPostsGlobal( selected = "", page, limit=30, count=30 ) {
-      this.postsLoading = true;
-        let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}`
+      async getPostsGlobal( selected = "", page, limit=30, count=30 ) {
+        this.postsLoading = true;
+          let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}`
 
-        if (selected) {
-          const selectedRegion = `&g=${selected}`
+          if (selected) {
+            const selectedRegion = `&g=${selected}`
+            url += selectedRegion;
+          }
 
-          url += selectedRegion;
-        }
+          if (page != null) {
+              url += `&after=` + page
+          }
 
-        if (page != null) {
-            url += `&after=` + page
-        }
-
-        const  data  = await axios.get(url);
-        const { children, after } = data.data.data;
-        this.posts = children
-        this.nextPage = after
-        this.postsLoading = false
-        return {
-
-         posts: children,
-
-         nextPage: after
-
-        }
-    },
-    
-    morePosts () {
-      window.onscroll = async () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow && !this.postsLoading) {
-            this.postsLoading = true;
-
-            if (this.nextPage != null) {
-
-                const { posts, nextPage } = await this.getPostsGlobal("hot", this.nextPage, 30, 30)
-                
-
-                this.posts = this.posts.concat(posts);
-
-                this.nextPage = nextPage;
-
-                this.postsLoading = false;
-
-            }
-        }
-    }
-}
+          const { data } = await axios.get(url);
+          const { children, after } = data.data.data;
+          this.posts = children
+          this.nextPage = after
+          this.postsLoading = false
+          return {
+          posts: children,
+          nextPage: after
+          }
+      },
+      
+      morePosts () {
+        window.onscroll = async () => {
+          let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+          if (bottomOfWindow && !this.postsLoading) {
+              this.postsLoading = true;
+              if (this.nextPage != null) {
+                  const { posts, nextPage } = await this.getPostsGlobal("hot", this.nextPage, 30, 30)
+                  this.posts = this.posts.concat(posts);
+                  this.nextPage = nextPage;
+                  this.postsLoading = false;
+              }
+          }
+      }
+  }
 },
 
     mounted () {
