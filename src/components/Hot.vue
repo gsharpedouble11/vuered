@@ -8,46 +8,28 @@
         <label for="get-global">Select Country</label>
         <select  class="form-control" id="get-global" :options="selectables" v-model="selected" v-on:change="getPostsGlobal(selected)">
         <option v-for="selectable in selectables" v-bind:key="selectable.value">
-            {{selectable.value}}
+            {{selectable.name}}
         </option>
-    </select>
-      </div>
-    <div class="card-columns">
-
-        <div class="card p-3"
-          v-for="post in posts" v-bind:key="post.data.id">
-
-          <blockquote class="card-blockquote">
-            <p>
-              {{ post.data.title }}
-            </p>
-            <footer>
-              <small>
-                <a target="_blank"
-                  :href="post.data.url">
-                  Read more on {{ post.data.domain }}
-                </a>
-              </small>
-            </footer>
-          </blockquote>
-
-        </div>
-
+        </select>
       </div>
 
- 
-      <!-- <button :disabled="postsLoading" type="button" class="btn btn-secondary btn-lg btn-block" id="more-posts" v-on:click="morePosts">Load more posts</button> -->
-    </div>
+      <Card v-bind:posts="posts" />
+
+  </div>
 </template>
 
 <script>
 
 // import api from "../services/api.js"
 import axios from 'axios'
+import Card from './Card.vue'
 
 export default {
     
   name: 'Hot',
+  components: {
+    Card
+    },
 
 
   data () {
@@ -83,26 +65,34 @@ export default {
 
         const  data  = await axios.get(url);
         const { children, after } = data.data.data;
-
         this.posts = children
         this.nextPage = after
-        this.postsLoading = false;
+        this.postsLoading = false
+        return {
+
+         posts: children,
+
+         nextPage: after
+
+        }
     },
     
     morePosts () {
       window.onscroll = async () => {
         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
+        if (bottomOfWindow && !this.postsLoading) {
+            this.postsLoading = true;
 
             if (this.nextPage != null) {
 
                 const { posts, nextPage } = await this.getPostsGlobal("hot", this.nextPage, 30, 30)
+                
 
                 this.posts = this.posts.concat(posts);
 
-                console.log(this.posts)
-
                 this.nextPage = nextPage;
+
+                this.postsLoading = false;
 
             }
         }
