@@ -8,10 +8,7 @@
           </p>
           <footer>
             <small>
-              <a target="_blank"
-                :href="post.data.url">
-                Read more on {{ post.data.domain }}
-              </a>
+              <router-link to="/post">Read More</router-link>
             </small>
           </footer>
         </blockquote>
