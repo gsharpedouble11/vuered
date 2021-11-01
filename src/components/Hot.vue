@@ -2,8 +2,11 @@
 
   <div class="container">
       <div>
+        <div class="text-center" v-if="postsLoading">
+            Loading...
+        </div>
         <label for="get-global">Select Country</label>
-        <select  class="form-control" id="get-global" @change="getPostsGlobal(selected)" :options="selectables" v-model="selected">
+        <select  class="form-control" id="get-global" :options="selectables" v-model="selected" v-on:change="getPostsGlobal(selected)">
         <option v-for="selectable in selectables" v-bind:key="selectable.value">
             {{selectable.value}}
         </option>
@@ -12,7 +15,7 @@
     <div class="card-columns">
 
         <div class="card p-3"
-          v-for="post in posts" v-bind:key="post.data.title">
+          v-for="post in posts" v-bind:key="post.data.id">
 
           <blockquote class="card-blockquote">
             <p>
@@ -32,17 +35,14 @@
 
       </div>
 
-      <div class="text-center"
-        v-show="postsLoading">
-          Loading...
-      </div>
+ 
       <!-- <button :disabled="postsLoading" type="button" class="btn btn-secondary btn-lg btn-block" id="more-posts" v-on:click="morePosts">Load more posts</button> -->
     </div>
 </template>
 
 <script>
 
-import api from "../services/api.js"
+// import api from "../services/api.js"
 import axios from 'axios'
 
 export default {
@@ -57,6 +57,7 @@ export default {
 
 // this.nextPage = nextPage;
 //   },
+
 
   data () {
     return {
@@ -75,47 +76,52 @@ export default {
 
   methods: {
     // get api of 'hot' based on location
-    async getPostsGlobal( selected, page, limit=30, count=30 ) {
+    async getPostsGlobal( selected = "", page, limit=30, count=30 ) {
+      this.postsLoading = true;
+        let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}`
 
-        let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}&g=${selected}`
+        if (selected) {
+          const selectedRegion = `&g=JP`
+
+          url += selectedRegion;
+        }
+
 
         if (page != null) {
             url += `&after=` + page
         }
 
-        const { data } = await axios.get(url);
-        console.log(data)
-        return {
+        const  data  = await axios.get(url);
+        const { children } = data.data.data;
+        console.log(children)
 
-            posts: data.data.children,
-
-            nextPage: data.data.after,
-
-        };
-        
+        this.posts = children
+        // console.log(this.posts);
+        this.postsLoading = false;
     },
     
-    morePosts () {
-      window.onscroll = async () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-            console.log("bottom");
-            if (this.nextPage != null) {
-                console.log(this.nextPage)
-                const { posts, nextPage } = await api.getPosts("hot", this.nextPage, 30, 30)
+//     morePosts () {
+//       window.onscroll = async () => {
+//         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+//         if (bottomOfWindow) {
+//             console.log("bottom");
+//             if (this.nextPage != null) {
+//                 console.log(this.nextPage)
+//                 const { posts, nextPage } = await api.getPosts("hot", this.nextPage, 30, 30)
 
-                this.posts = this.posts.concat(posts);
+//                 this.posts = this.posts.concat(posts);
 
-                this.nextPage = nextPage;
+//                 this.nextPage = nextPage;
 
-            }
-        }
-    }
-}
+//             }
+//         }
+//     }
+// }
 },
 
     mounted () {
-        this.morePosts();
+        this.getPostsGlobal()
+        // this.morePosts();
     }
 }
 
