@@ -48,15 +48,6 @@ import axios from 'axios'
 export default {
     
   name: 'Hot',
-//   async created () {
-//       const { posts, nextPage } = await api.getPosts("hot", null, 30 , 30);
-
-// console.log(posts);
-// this.posts = posts;
-
-
-// this.nextPage = nextPage;
-//   },
 
 
   data () {
@@ -81,47 +72,47 @@ export default {
         let url = `https://www.reddit.com/r/all/hot.json?limit=${limit}&count=${count}`
 
         if (selected) {
-          const selectedRegion = `&g=JP`
+          const selectedRegion = `&g=${selected}`
 
           url += selectedRegion;
         }
-
 
         if (page != null) {
             url += `&after=` + page
         }
 
         const  data  = await axios.get(url);
-        const { children } = data.data.data;
-        console.log(children)
+        const { children, after } = data.data.data;
 
         this.posts = children
-        // console.log(this.posts);
+        this.nextPage = after
         this.postsLoading = false;
     },
     
-//     morePosts () {
-//       window.onscroll = async () => {
-//         let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-//         if (bottomOfWindow) {
-//             console.log("bottom");
-//             if (this.nextPage != null) {
-//                 console.log(this.nextPage)
-//                 const { posts, nextPage } = await api.getPosts("hot", this.nextPage, 30, 30)
+    morePosts () {
+      window.onscroll = async () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
 
-//                 this.posts = this.posts.concat(posts);
+            if (this.nextPage != null) {
 
-//                 this.nextPage = nextPage;
+                const { posts, nextPage } = await this.getPostsGlobal("hot", this.nextPage, 30, 30)
 
-//             }
-//         }
-//     }
-// }
+                this.posts = this.posts.concat(posts);
+
+                console.log(this.posts)
+
+                this.nextPage = nextPage;
+
+            }
+        }
+    }
+}
 },
 
     mounted () {
         this.getPostsGlobal()
-        // this.morePosts();
+        this.morePosts();
     }
 }
 
