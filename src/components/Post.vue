@@ -4,11 +4,14 @@
             <div class="row">
                 <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
                     <div class="intro">
-                        <h1 class="text-center">These are the voyages of the Starship Enterprise</h1>
-                        <p class="text-center"><span class="by">by</span> <a href="#">Author Name</a><span class="date">Sept 8th, 2018 </span></p><img class="img-fluid" src="assets/img/desk.jpg"></div>
+                        <h1 class="text-center">{{ title }}</h1>
+                        <p class="text-center"><span class="by">by</span> <a href="#">{{ author }}</a><span class="date">{{ date }}</span></p><img class="img-fluid" :src="imgsrc"></div>
                     <div class="text">
                         <p>
-                          Sensors indicate human life forms 30 meters below the planet's surface. Stellar flares are increasing in magnitude and frequency. Set course for Rhomboid Dronegar 006, warp seven. There's no evidence of an advanced communication network. Total guidance system failure, with less than 24 hours' reserve power. Shield effectiveness has been reduced 12 percent. We have covered the area in a spherical pattern which a ship without warp drive could cross in the given time.
+                          {{ content }}
+                        </p>
+                        <p v-if="optionalContent">
+                          {{ optionalContent }}
                         </p>
                     </div>
                 </div>
@@ -19,7 +22,35 @@
 
 <script>
     export default {
-        name: 'Post'
+        name: 'Post',
+        props: {
+          title: {
+            type: string,
+            required: true
+          },
+          author: {
+            type: string,
+            required: true
+          },
+          date: {
+            type: string,
+            required: true
+          },
+          img: {
+            type: string,
+            default: "assets/img/desk.jpg",
+            required: false
+          },
+          content: {
+            type: string,
+            required: true
+          },
+          optionalContent: {
+            type: string,
+            default: null,
+            required: false
+          }
+        }
     }
 </script>
 
