@@ -25,28 +25,28 @@
         name: 'Post',
         props: {
           title: {
-            type: string,
+            type: String,
             required: true
           },
           author: {
-            type: string,
+            type: String,
             required: true
           },
           date: {
-            type: string,
+            type: String,
             required: true
-          },
+          }, 
           img: {
-            type: string,
+            type: String,
             default: "assets/img/desk.jpg",
             required: false
           },
           content: {
-            type: string,
+            type: String,
             required: true
           },
           optionalContent: {
-            type: string,
+            type: String,
             default: null,
             required: false
           }
