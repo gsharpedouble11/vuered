@@ -6,14 +6,7 @@
       author="John Waring"
       date="Sept 8th 2020"
       content="some basic content."
-    />
-
-    <Post
-      title="Another by John"
-      author="John Waring"
-      date="Oct 24th 2021"
-      content="Differnt basic content."
-      optionalContent="Some additional content which is optional."
+      :postData="$attrs.postData"
     />
 
   </div>
@@ -27,6 +20,12 @@ export default {
   name: 'Posting',
   components: {
     Post
+  },
+  created () {
+      console.log(this.$route.params.postid);
+
+      // FUTURE GEORGE: THIS IS HOW TO ACCESS ROUTER PROPS DEFINED IN ROUTES SEE ROUTE INDEX
+      console.log(this.$attrs)
   }
 }
 </script>

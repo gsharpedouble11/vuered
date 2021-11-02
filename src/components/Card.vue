@@ -8,7 +8,13 @@
           </p>
           <footer>
             <small>
-              <router-link to="/post">Read More</router-link>
+              <router-link 
+                :to="{ 
+                  name: 'Posting',
+                  params: { postid: post.data.id },
+                  props: { postData: post.data } 
+                }" 
+                  >Read More</router-link>
             </small>
           </footer>
         </blockquote>

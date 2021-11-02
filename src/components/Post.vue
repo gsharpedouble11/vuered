@@ -4,14 +4,11 @@
             <div class="row">
                 <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
                     <div class="intro">
-                        <h1 class="text-center">{{ title }}</h1>
-                        <p class="text-center"><span class="by">by</span> <a href="#">{{ author }}</a><span class="date">{{ date }}</span></p><img class="img-fluid" :src="imgsrc"></div>
+                        <h1 class="text-center">{{ }}</h1>
+                        <p class="text-center"><span class="by">by</span> <a href="#">{{  }}</a><span class="date">{{ }}</span></p><img class="img-fluid" :src="imgsrc"></div>
                     <div class="text">
                         <p>
-                          {{ content }}
-                        </p>
-                        <p v-if="optionalContent">
-                          {{ optionalContent }}
+                          {{ postData.title }}
                         </p>
                     </div>
                 </div>
@@ -24,31 +21,10 @@
     export default {
         name: 'Post',
         props: {
-          title: {
-            type: String,
-            required: true
-          },
-          author: {
-            type: String,
-            required: true
-          },
-          date: {
-            type: String,
-            required: true
-          }, 
-          img: {
-            type: String,
-            default: "assets/img/desk.jpg",
-            required: false
-          },
-          content: {
-            type: String,
-            required: true
-          },
-          optionalContent: {
-            type: String,
+          postData: {
+            type: Object,
             default: null,
-            required: false
+            required: true,
           }
         }
     }

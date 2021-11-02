@@ -24,14 +24,16 @@ const routes = [
     component: Hotzone
   },
   {
-    path: '/post',
+    path: '/post/:postid',
     name: 'Posting',
-    component: Posting
+    component: Posting,
+    props: true /*{ postData: { title: "akjnsdkajdns" }}*/
   }
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 })
 
 export default router
