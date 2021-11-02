@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Ran from '../views/Ran.vue'
 import Hotzone from '../views/Hotzone.vue'
-import Post from '../components/Post.vue'
+import Posting from '../views/Posting.vue'
 
 Vue.use(VueRouter)
 
@@ -25,8 +25,8 @@ const routes = [
   },
   {
     path: '/post',
-    name: 'Post',
-    component: Post
+    name: 'Posting',
+    component: Posting
   }
 ]
 
