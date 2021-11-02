@@ -61,7 +61,7 @@ export default {
           }
 
           const { data } = await axios.get(url);
-          const { children, after } = data.data.data;
+          const { children, after } = data.data;
           this.posts = children
           this.nextPage = after
           this.postsLoading = false

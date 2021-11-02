@@ -21,13 +21,13 @@ export default {
     Card
   },
   async created () {
-      const { posts, nextPage } = await api.getPosts("top", null, 30 , 30);
+    const { posts, nextPage } = await api.getPosts("top", null, 30 , 30);
 
 
-this.posts = posts;
+    this.posts = posts;
 
 
-this.nextPage = nextPage;
+    this.nextPage = nextPage;
   },
 
   data () {
